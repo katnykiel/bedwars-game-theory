@@ -16,6 +16,7 @@ class Agent:
         # what weath does the agent possess?
         self.team_n=team_n
         self.position = self.get_starting_position() # the x,y location of the agent
+        self.traits = self.get_traits()
 
     def get_traits(self):
         """Calculate the 'traits' of the agent that will be used in decision-making
@@ -28,7 +29,10 @@ class Agent:
         (do we just keep a bed_defending stat? add them to some base point?)
         """
 
+        
+
         traits = {'power':0,'bed_offense':0,'bed_defense':0} | self.personality
+        self.traits = traits
         return traits
 
     def get_starting_position(self):
@@ -38,7 +42,7 @@ class Agent:
             starting_pos: x,y coord of bed
         """
         bed_map = {0:[0,2],1:[0,4],2:[2,6],3:[4,6],
-                   4:[6,4],5:[2,6],6:[4,0],7:[2,0]}
+                   4:[6,4],5:[6,2],6:[4,0],7:[2,0]}
         return bed_map[self.team_n]
 
     def die(self):
@@ -84,7 +88,7 @@ def get_test_agents():
 def main():
     """testing loop for agents!
     """
-    # item_df = get_item_df()
-    # print(item_df)
-    print(get_test_agents())
+    item_df = get_item_df()
+    print(item_df)
+    # print(get_test_agents())
 main()
