@@ -28,7 +28,7 @@ def initialize_map():
                     [2,0,1,0,1,0,2]])
     print(map) # Print map
 
-    return map
+    return map # return map
 
-initialize_map()
+initialize_map() # call initialize map function
 
