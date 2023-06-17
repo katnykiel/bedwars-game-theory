@@ -13,3 +13,4 @@ Determine the optimal economic strategies to win games in hypixel.net bedwars
   - give teams iron/gold and let them do what they want, simulate entire games
   - each team is a neural network with different
 - model map as a grid of islands and gaps, 7x7, teams can build and cross bridges
+- ![[Pasted image 20230617121845.png]]
