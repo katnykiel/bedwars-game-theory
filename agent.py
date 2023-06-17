@@ -1,7 +1,7 @@
 """
 Load items df
 """
-
+import random
 from items import get_item_df
 class Agent:
     """Define an 'agent' in bedwars that acts upon a grid
@@ -11,7 +11,7 @@ class Agent:
                        #     {'aggressiveness':0, 'teamwork':0,
                        #     'emerald_desire':0,'diamond_desire':0} # traits prone to mutation
         self.skills = skills #{'PvP':0,'speed':0} # traits NOT prone to mutation
-        self.items = {} # what items does the agent possess?
+        self.items = [] # what items does the agent possess?
         self.wealth = {'iron':0,'gold':0,'diamond':0,'emerald':0}
         # what weath does the agent possess?
         self.team_n=team_n
@@ -24,14 +24,14 @@ class Agent:
         Returns:
             traits: set of traits to determine decision making
 
-        things to keep in mind
-        some items raise bed_breaking 
-        (do we just keep a bed_defending stat? add them to some base point?)
         """
 
-        
+        agent_item_df = item_df[item_df['item_names'].isin(self.items)]
+        power = agent_item_df['item_power'].sum()
+        offense = agent_item_df['item_offense'].sum()
+        defense = agent_item_df['item_defense'].sum()
 
-        traits = {'power':0,'bed_offense':0,'bed_defense':0} | self.personality
+        traits = {'power':power,'offense':offense,'defense':defense} | self.personality
         self.traits = traits
         return traits
 
@@ -80,15 +80,16 @@ def get_test_agents():
     Returns:
        agent_list: list of Agent objects
     """    
+
     agent_list = []
     for i in range(8):
-        agent_list.append(Agent(i))
+        agent_list.append(Agent(i,personality={'aggressiveness':random.random(), 'teamwork':random.random(),'emerald_desire':random.random(),'diamond_desire':random.random()}))
     return agent_list
 
 def main():
     """testing loop for agents!
     """
-    item_df = get_item_df()
-    print(item_df)
     # print(get_test_agents())
+item_df = get_item_df()
 main()
+
