@@ -84,6 +84,10 @@ def get_test_agents():
     agent_list = []
     for i in range(8):
         agent_list.append(Agent(i,personality={'aggressiveness':random.random(), 'teamwork':random.random(),'emerald_desire':random.random(),'diamond_desire':random.random()}))
+        
+    for agent in agent_list:
+        agent.items = item_df['item_names'].sample(n=5,replace=False)
+        agent.get_traits();
     return agent_list
 
 def main():
