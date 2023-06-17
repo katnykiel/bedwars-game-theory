@@ -15,7 +15,7 @@ class Agent:
         self.wealth = {'iron':0,'gold':0,'diamond':0,'emerald':0}
         # what weath does the agent possess?
         self.team_n=team_n
-        self.position = self.get_starting_position # the x,y location of the agent
+        self.position = self.get_starting_position() # the x,y location of the agent
 
     def get_traits(self):
         """Calculate the 'traits' of the agent that will be used in decision-making
@@ -84,7 +84,7 @@ def get_test_agents():
 def main():
     """testing loop for agents!
     """
-    item_df = get_item_df()
-    print(item_df)
-
+    # item_df = get_item_df()
+    # print(item_df)
+    print(get_test_agents())
 main()
