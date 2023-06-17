@@ -6,7 +6,7 @@ from items import get_item_df
 class Agent:
     """Define an 'agent' in bedwars that acts upon a grid
     """
-    def __init__(self,team_n,personality,skills):
+    def __init__(self,team_n,personality = {},skills = {}):
         self.personality = personality
                        #     {'aggressiveness':0, 'teamwork':0,
                        #     'emerald_desire':0,'diamond_desire':0} # traits prone to mutation
@@ -16,8 +16,6 @@ class Agent:
         # what weath does the agent possess?
         self.team_n=team_n
         self.position = self.get_starting_position # the x,y location of the agent
-
-agent.get_traits()['power']
 
     def get_traits(self):
         """Calculate the 'traits' of the agent that will be used in decision-making
@@ -71,6 +69,17 @@ agent.get_traits()['power']
         decision = []
 
         return decision
+
+def get_test_agents():
+    """test by returning a list of agents
+
+    Returns:
+       agent_list: list of Agent objects
+    """    
+    agent_list = []
+    for i in range(8):
+        agent_list.append(Agent(i))
+    return agent_list
 
 def main():
     """testing loop for agents!
