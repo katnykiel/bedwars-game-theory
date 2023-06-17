@@ -16,19 +16,16 @@ def initialize_map():
     4 = Bridge
     '''
     
-    map = np.zeros((7, 7)) # Initialize a numpy array of dimensions 7 x 7
+    game_map = np.zeros((7, 7)) # Initialize a numpy array of dimensions 7 x 7
     print("Map initialized.") # Log
 
-    map = np.array([[2,0,1,0,1,0,2], # Define initial conditions of the map
+    game_map = np.array([[2,0,1,0,1,0,2], # Define initial conditions of the map
                     [0,0,0,0,0,0,0],
                     [1,0,3,0,3,0,1],
                     [0,0,0,0,0,0,0],
                     [1,0,3,0,3,0,1],
                     [0,0,0,0,0,0,0],
                     [2,0,1,0,1,0,2]])
-    print(map) # Print map
+    print(game_map) # Print map
 
-    return map # return map
-
-initialize_map() # call initialize map function
-
+    return game_map # return map
