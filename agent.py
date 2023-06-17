@@ -17,6 +17,7 @@ class Agent:
         self.team_n=team_n
         self.position = self.get_starting_position() # the x,y location of the agent
         self.traits = self.get_traits()
+        self.path = [] # current path the agent is on
 
     def get_traits(self):
         """Calculate the 'traits' of the agent that will be used in decision-making
@@ -57,7 +58,7 @@ class Agent:
                          'obsidian','ladders','chain_armor','iron_armor',
                          'diamond_armor','shears','wooden_axe','wooden_pickaxe']
         self.items = {k: v for k, v in self.items.items() if k in items_to_keep}
-
+        self.path = []
 
     def make_decision(self):
         """ things to keep in mind
@@ -70,9 +71,45 @@ class Agent:
         more wealth, less aggressive
         """
 
-        decision = []
+        # for now, define some random variable as a target block
+        target = [random.randint(0,6),random.randint(0,6)]
+        path = self.get_path(target) 
+        self.path = path
+    
+    def move(self):
+        self.position = self.path[0]
+        self.path.pop(0)
+        if len(self.path) == 0:
+            self.make_decision()
+        
+    def get_path(self, target):
+        start_pos = self.position
+        end_pos = target
+        diff_x = end_pos[0] - start_pos[0]
+        diff_y = end_pos[1] - start_pos[1]
 
-        return decision
+        path = []
+        
+        # Move horizontally
+        if diff_x > 0:
+            for i in range(1, diff_x + 1):
+                path.append((start_pos[0] + i, start_pos[1]))
+        else:
+            for i in range(-1, diff_x - 1, -1):
+                path.append((start_pos[0] + i, start_pos[1]))
+        
+        # Move vertically
+        if diff_y > 0:
+            for i in range(1, diff_y + 1):
+                path.append((end_pos[0], start_pos[1] + i))
+        else:
+            for i in range(-1, diff_y - 1, -1):
+                path.append((end_pos[0], start_pos[1] + i))
+        
+        path.append(end_pos)
+        return path
+
+
 
 def get_test_agents():
     """test by returning a list of agents
@@ -90,6 +127,12 @@ def get_test_agents():
         agent.get_traits();
     return agent_list
 
+def run_test_game():
+    agent_list = get_test_agents()
+    [agent.make_decision() for agent in agent_list]
+    for i in range(10):
+        [agent.move() for agent in agent_list]
+        print([agent.position for agent in agent_list])
 def main():
     """testing loop for agents!
     """
@@ -97,3 +140,4 @@ def main():
 item_df = get_item_df()
 main()
 
+run_test_game()
