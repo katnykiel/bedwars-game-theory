@@ -24,3 +24,27 @@ Determine the optimal economic strategies to win games in hypixel.net bedwars
   8. Bed Break
 
 - ![[Pasted image 20230617121845.png]]
+
+CALL initialize map
+
+CALL game master
+
+FUNCTION initialize map
+
+  SET map array = [7 x 7]
+
+  SET agent positions = [7 x 7 x 8]
+
+RETURN map array, agent positions
+
+FUNCTION engagement
+
+FUNCTION game master
+  
+  GET agent positions
+
+  WHEN agent positiony = positiony
+
+  CALL engagement
+
+  
