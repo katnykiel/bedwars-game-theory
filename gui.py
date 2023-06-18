@@ -101,9 +101,9 @@ def get_heatmap(position):
     heatmap = go.Heatmap(z=z)
     return heatmap
 
-def get_plot(game_map, positions):
+def get_plot(game_map):
 
-    # positions = [agent.position for agent in agent_list]
+    positions = get_agent_postions()
     
     # Define the colorscale for the heatmap
     colorscale = [[0, 'white'], [1, 'black']]
@@ -115,18 +115,17 @@ def get_plot(game_map, positions):
     heatmap = go.Heatmap(z=z, colorscale=colorscale)
 
     # Set the layout for the plot
-    layout = go.Layout(title='Game Map Heatmap')
+    #layout = go.Layout(title='Game Map Heatmap')
 
     # Create the figure object
-    fig = go.Figure(data=[heatmap], layout=layout)
+    #fig = go.Figure(data=[heatmap], layout=layout)
 
-    for i in range(len(positions)):
-        x, y = positions[i]
-        fig.add_annotation(x=x, y=y, text=f"Agent {i+1}", showarrow=False)
+    #for i in range(len(positions)):
+        #x, y = positions[i]
+        #fig.add_annotation(x=x, y=y, text=f"Agent {i+1}", showarrow=False)
     
-        fig.update_layout(annotations=fig.layout.annotations)
-    
-    return fig
+        #fig.update_layout(annotations=fig.layout.annotations)
+    return heatmap
 
 
 
@@ -143,18 +142,18 @@ def get_ising_plot(spin):
     return image
 
 # Stich together plotly frames to create an animation 
-def get_ising_video(frames, initial_spin):
+def get_agent_video(frames, initial_map):
     fig = go.Figure(
-    data=[get_ising_plot(initial_spin)], 
+    data=[get_plot(initial_map)], 
     layout=go.Layout(
-        title = "Ising model demonstration",
+        title = "Minecwaft",
         xaxis = {'showticklabels':False},
         yaxis = {'showticklabels':False},
         updatemenus=[dict(
             type="buttons",
             buttons=[dict(label="Play",
                           method="animate",
-                          args=[None, dict(frame=dict(duration=1))])])]
+                          args=[None, dict(frame=dict(duration=1_000))])])]
         ), frames=frames )
 
     return fig 

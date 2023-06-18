@@ -6,19 +6,18 @@ import numpy as np
 import random
 from gui import *
 
-game_map = create_map.initialize_map()
 
-fig = get_plot(game_map)
+
+
+init_game_map = create_map.initialize_map()
+game_map = init_game_map
+fig = get_agent_video([go.Frame(data = get_plot(game_map))], init_game_map)
+
 fig.show()
 
 agent_list = get_test_agents()
-agent_list[0].position = [0, 4]
-agent_list[5].position = [0, 4]
-
-
 
 def initialize_referee():
-    
     
     agents_alive = 8 # defines the number of agents currently playing the game and are not dead
     
@@ -81,15 +80,51 @@ def find_agents_with_shared_positions_and_teams(agent_list):
         if len(v)>=2 and len(set([agent.team_n for agent in v]))!=1:
             engagement(v)
         
+def get_agent_postions():
+    """
+    Get agent positions
 
-
-
-initialize_referee()
-
-
-
+    Calls the get_test_agents function to return a list of agents
+    initializes agent_positions list
+    iterates over agents list to append the position of each agent to the agent position
+    return agent position list
+    """
     
+    agents = get_test_agents() # get test agents
+    agent_positions = [agent.position for agent in agents]
 
+    return agent_positions # return the list
+
+def get_base_positions(game_map):
+    
+    base_positions = []
+
+    for i in game_map[i][j]:
+            for j in game_map[i][j]:
+                if game_map[i][j] == 1:
+                    base = game_map[i][j]
+                    base_positions.append(base)
+    return base_positions
+
+def allocate_resources(agent_positions, resources):
+    
+    base_positions = get_base_positions(init_game_map)
+    agent_positions = get_agent_postions()
+    for agent in agent_positions:
+        for k in base_positions:
+            if agent.position == base_positions{k}:
+                pass
+
+def drop_resources_on_tick():
+    pass
+
+def check_resources_at_base():
+
+def pick_up_resources(agent, resource):
+    pass
+
+def tick(previous_time):
+    pass   
 
 
 
