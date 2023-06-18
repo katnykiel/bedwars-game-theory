@@ -6,19 +6,18 @@ import numpy as np
 import random
 from gui import *
 
-game_map = create_map.initialize_map()
 
-fig = get_plot(game_map)
+run_test_game()
+
+init_game_map = create_map.initialize_map()
+game_map = init_game_map
+fig = get_agent_video([go.Frame(data = get_plot(game_map))], init_game_map)
+
 fig.show()
 
 agent_list = get_test_agents()
-agent_list[0].position = [0, 4]
-agent_list[5].position = [0, 4]
-
-
 
 def initialize_referee():
-    
     
     agents_alive = 8 # defines the number of agents currently playing the game and are not dead
     
@@ -81,9 +80,6 @@ def find_agents_with_shared_positions_and_teams(agent_list):
         if len(v)>=2 and len(set([agent.team_n for agent in v]))!=1:
             engagement(v)
         
-
-
-
 initialize_referee()
 
 
