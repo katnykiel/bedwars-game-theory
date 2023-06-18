@@ -2,12 +2,11 @@ import plotly.graph_objs as go
 import numpy as np
 from agent import *
 
-agent_list = get_test_agents()
+# agent_list = get_test_agents()
 
-def get_plot(game_map):
-    
+def get_plot(game_map, positions):
 
-    positions = [agent.position for agent in agent_list]
+    # positions = [agent.position for agent in agent_list]
     
     # Define the colorscale for the heatmap
     colorscale = [[0, 'white'], [1, 'black']]
@@ -34,5 +33,32 @@ def get_plot(game_map):
 
 
 
+# Generate a plotly image from an array of spins -1 and 1
+def get_ising_plot(spin):
+    img = np.array(spin, dtype = object)
+    for i in range(len(spin[0])):
+        for j in range(len(spin[1])):
+            if spin[i,j] == 1:
+                img[i,j] = [255,255,255]
+            else:
+                img[i,j] = [0,0,0]
+    image = go.Image(z=img)
+    return image
 
+# Stich together plotly frames to create an animation 
+def get_ising_video(frames, initial_spin):
+    fig = go.Figure(
+    data=[get_ising_plot(initial_spin)], 
+    layout=go.Layout(
+        title = "Ising model demonstration",
+        xaxis = {'showticklabels':False},
+        yaxis = {'showticklabels':False},
+        updatemenus=[dict(
+            type="buttons",
+            buttons=[dict(label="Play",
+                          method="animate",
+                          args=[None, dict(frame=dict(duration=1))])])]
+        ), frames=frames )
+
+    return fig 
 
