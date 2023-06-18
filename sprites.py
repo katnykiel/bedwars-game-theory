@@ -132,18 +132,18 @@ def get_agent_ordering(pos):
         list: offset list for a given site
     """
 
-    if pos[0]==0 and pos[1] in [2,4]:
+    if pos[0]==0 and (pos[1] in [2,4]):
+        offset = [[0,2],[-2,0],[0,-2],[2,0]]
+    elif pos[0]==6 and (pos[1] in [2,4]):
         offset = [[0,-2],[2,0],[0,2],[-2,0]]
-    elif pos[0]==6 and pos[1] in [2,4]:
-        offset = [[2,0],[0,2],[-2,0],[0-2]]
-    elif pos[1]==0 and pos[0] in [2,4]:
+    elif pos[1]==0 and (pos[0] in [2,4]):
         offset = [[-2,0],[0,-2],[2,0],[0,2]]
-    elif pos[1]==6 and pos[0] in [2,4]:
+    elif pos[1]==6 and (pos[0] in [2,4]):
         offset = [[2,0],[0,2],[-2,0],[0,-2]]
         # offset = [[2,0],[0,2],[-2,0],[0-2]]
 
-    # else:
-    #     offset = [[-2,0],[0,-2],[2,0],[0,2]]
+    else:
+        offset = [[-2,0],[0,-2],[2,0],[0,2]]
 
     return offset
 
