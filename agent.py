@@ -128,11 +128,8 @@ def get_test_agents():
     """    
 
     agent_list = []
-    for i in range(8):
-        agent_list.append(Agent(i,personality={'aggressiveness':random.random(), 'teamwork':random.random(),'emerald_desire':random.random(),'diamond_desire':random.random()}))
-
-    for i in range(8):
-        agent_list.append(Agent(i,personality={'aggressiveness':random.random(), 'teamwork':random.random(),'emerald_desire':random.random(),'diamond_desire':random.random()}))
+    for i in range(16):
+        agent_list.append(Agent(i%8,personality={'aggressiveness':random.random(), 'teamwork':random.random(),'emerald_desire':random.random(),'diamond_desire':random.random()}))
         
     for agent in agent_list:
         agent.items = item_df['item_names'].sample(n=5,replace=False)
@@ -140,15 +137,22 @@ def get_test_agents():
     return agent_list
 
 def run_test_game():
+    """run a sample game for testing purposes
+    """    
     agent_list = get_test_agents()
-    # agent_list[2].position=[2,0]
-    # [agent.make_decision() for agent in agent_list]
+    [agent.make_decision() for agent in agent_list]
     # positions = []
-    # for i in range (100):
-    #     [agent.move() for agent in agent_list]
-    #     # print(quick_plot([agent.position for agent in agent_list]),'\n')
-    #     positions.append([agent.position for agent in agent_list])
-    get_figure(agent_list)
+    frames = []
+    frames.append(get_frame(agent_list))
+    for i in range (20):
+        [agent.move() for agent in agent_list]
+        # print(quick_plot([agent.position for agent in agent_list]),'\n')
+        # positions.append([agent.position for agent in agent_list])
+        frames.append(get_frame(agent_list))
+    fig = get_animation(frames)
+    # fig = get_animation_old(positions)
+    fig.show()
+   
     # get_animation(positions).show()
 
 def main():

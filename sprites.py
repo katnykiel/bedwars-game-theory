@@ -144,6 +144,18 @@ def get_agent_ordering(pos):
 
     else:
         offset = [[-2,0],[0,-2],[2,0],[0,2]]
+    offset.append([-2,-2])
+    offset.append([-2,2])
+    offset.append([2,2])
+    offset.append([2,-2])
+    offset.append([-1,-2])
+    offset.append([1,-2])
+    offset.append([2,-1])
+    offset.append([2,1])
+    offset.append([1,2])
+    offset.append([-1,2])
+    offset.append([-2,1])
+    offset.append([-2,-1])
 
     return offset
 
@@ -165,6 +177,9 @@ def get_agent_sprites(agents):
         offset = get_agent_ordering(position)
         new_pos = [7*coord+3 for coord in position]
         for i,agent in enumerate(agents):
-            pixel_array[new_pos[0]+offset[i][0]][new_pos[1]+offset[i][1]] = get_team_color(agent.team_n)
+            if len(agents)==1:
+                pixel_array[new_pos[0]][new_pos[1]] = get_team_color(agent.team_n)
+            else:
+                pixel_array[new_pos[0]+offset[i][0]][new_pos[1]+offset[i][1]] = get_team_color(agent.team_n)
 
     return pixel_array

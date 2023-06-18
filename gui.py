@@ -16,11 +16,12 @@ def get_map_trace(pixel_array):
     trace = go.Image(z=pixel_array)
     return trace
 
-def get_animation(traces):
-    return None
+def get_inital_map_pixels():
+    """get the intial 49x49 map array
 
-def get_figure(agents):
-    # test the bed making sprites
+    Returns:
+        pixels: 49x49 array of color codes
+    """    
     bed_map = {0:[0,2],1:[0,4],2:[2,6],3:[4,6],
                     4:[6,4],5:[6,2],6:[4,0],7:[2,0]}
 
@@ -44,20 +45,68 @@ def get_figure(agents):
             for j,color in enumerate(sublist):
                 if color != [255,255,255]:
                     pixels[i][j]=color
-        
+
+    return pixels
+
+def get_animation(frames):
+    """get an animation of the agents moving around
+
+    Args:
+        frames (list[Frame]): list of Frame objects of map
+
+    Returns:
+        fig: animated go.Figure()
+    """    
+    fig = go.Figure(
+    data=[get_map_trace(get_inital_map_pixels())], 
+    layout=go.Layout(
+        title = "minecwaft",
+        xaxis = {'showticklabels':False},
+        yaxis = {'showticklabels':False},
+        updatemenus=[dict(
+            type="buttons",
+            buttons=[dict(label="Play",
+                          method="animate",
+                          args=[None, dict(frame=dict(duration=500))])])]
+        ), frames=frames)
+    return fig 
+
+def get_frame(agents):
+    """return a Frame object for the animation
+
+    Args:
+        agents (list(Agent)): list of Agent objects
+
+    Returns:
+        frame: go.Frame object
+    """    
+    map_pixel_array = get_inital_map_pixels()
     # add agents as additional opaque trace
     agent_pixel_array = get_agent_sprites(agents)
-    agent_trace = go.Image(z=agent_pixel_array,opacity=.5)
+    # add agent pixels on top of map pixels
+    pixels = map_pixel_array
+    for i,sublist in enumerate(agent_pixel_array):
+        for j,color in enumerate(sublist):
+            if color != [255,255,255]:
+                pixels[i][j]=color
 
+    # agent_trace = go.Image(z=agent_pixel_array,opacity=.5)
     trace = get_map_trace(pixels)
-    fig = go.Figure()
-    fig.add_trace(trace)  
-    fig.add_trace(agent_trace)  
-    fig.update_xaxes(showticklabels=False)
-    fig.update_yaxes(showticklabels=False)
-    fig.show()
+    frame = go.Frame(data=[trace])
+    # fig.update_xaxes(showticklabels=False)
+    # fig.update_yaxes(showticklabels=False)
+    # fig.show()
+    return frame
 
 def quick_plot(positions):
+    """quick and dirty way to plot map in terminal, don't use this
+
+    Args:
+        positions (list of list of lists): coords :)
+
+    Returns:
+        grid (array): coords! i told you, don't use this 
+    """    
     # find the maximum x and y values to determine grid size
     n = 7
 
@@ -72,89 +121,3 @@ def quick_plot(positions):
     # join the characters in each row with spaces, then join all rows with newlines
     block = '\n'.join([' '.join(row) for row in grid])
     return grid
-
-def get_animation_old(positions):
-    frames = [go.Frame(data = get_heatmap(quick_plot(position))) for position in positions]
-    test_fig = go.Figure(get_heatmap(quick_plot(positions[0])))
-    test_fig.show()
-
-    fig = go.Figure(
-    data=[get_heatmap(quick_plot(positions[0]))], 
-    layout=go.Layout(
-        title = "minecwaft",
-        xaxis = {'showticklabels':False},
-        yaxis = {'showticklabels':False},
-        updatemenus=[dict(
-            type="buttons",
-            buttons=[dict(label="Play",
-                          method="animate",
-                          args=[None, dict(frame=dict(duration=100))])])]
-        ), frames=frames )
-
-    return fig 
-
-def get_heatmap(position):
-    print(position)
-    # Create a new game map array where 0 values are replaced with NaN
-    z = np.where(position == '.', np.nan, position)
-    # Create the heatmap trace with custom colorscale
-    heatmap = go.Heatmap(z=z)
-    return heatmap
-
-def get_plot(game_map):
-
-    positions = get_agent_postions()
-    
-    # Define the colorscale for the heatmap
-    colorscale = [[0, 'white'], [1, 'black']]
-
-    # Create a new game map array where 0 values are replaced with NaN
-    z = np.where(game_map == 0, np.nan, game_map)
-
-    # Create the heatmap trace with custom colorscale
-    heatmap = go.Heatmap(z=z, colorscale=colorscale)
-
-    # Set the layout for the plot
-    #layout = go.Layout(title='Game Map Heatmap')
-
-    # Create the figure object
-    #fig = go.Figure(data=[heatmap], layout=layout)
-
-    #for i in range(len(positions)):
-        #x, y = positions[i]
-        #fig.add_annotation(x=x, y=y, text=f"Agent {i+1}", showarrow=False)
-    
-        #fig.update_layout(annotations=fig.layout.annotations)
-    return heatmap
-
-
-
-# Generate a plotly image from an array of spins -1 and 1
-def get_ising_plot(spin):
-    img = np.array(spin, dtype = object)
-    for i in range(len(spin[0])):
-        for j in range(len(spin[1])):
-            if spin[i,j] == 1:
-                img[i,j] = [255,255,255]
-            else:
-                img[i,j] = [0,0,0]
-    image = go.Image(z=img)
-    return image
-
-# Stich together plotly frames to create an animation 
-def get_agent_video(frames, initial_map):
-    fig = go.Figure(
-    data=[get_plot(initial_map)], 
-    layout=go.Layout(
-        title = "Minecwaft",
-        xaxis = {'showticklabels':False},
-        yaxis = {'showticklabels':False},
-        updatemenus=[dict(
-            type="buttons",
-            buttons=[dict(label="Play",
-                          method="animate",
-                          args=[None, dict(frame=dict(duration=1_000))])])]
-        ), frames=frames )
-
-    return fig 
-
