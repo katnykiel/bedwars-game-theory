@@ -1,8 +1,55 @@
 import plotly.graph_objs as go
 import numpy as np
-from agent import *
+import time
+import os
+from create_map import initialize_map
+# from agent import *
 
 # agent_list = get_test_agents()
+
+def quick_plot(positions):
+    # find the maximum x and y values to determine grid size
+    n = len(positions)
+
+    # create the empty grid of dots
+    grid = [['.' for _ in range(n+1)] for _ in range(n+1)]
+
+    # replace the dots with indices for each position
+    for i, pos in enumerate(positions):
+        x, y = pos
+        grid[x][y] = str(i)
+        
+    # join the characters in each row with spaces, then join all rows with newlines
+    block = '\n'.join([' '.join(row) for row in grid])
+    return grid
+
+def get_animation(positions):
+    frames = [go.Frame(data = get_heatmap(quick_plot(position))) for position in positions]
+    test_fig = go.Figure(get_heatmap(quick_plot(positions[0])))
+    test_fig.show()
+
+    fig = go.Figure(
+    data=[get_heatmap(quick_plot(positions[0]))], 
+    layout=go.Layout(
+        title = "minecwaft",
+        xaxis = {'showticklabels':False},
+        yaxis = {'showticklabels':False},
+        updatemenus=[dict(
+            type="buttons",
+            buttons=[dict(label="Play",
+                          method="animate",
+                          args=[None, dict(frame=dict(duration=100))])])]
+        ), frames=frames )
+
+    return fig 
+
+def get_heatmap(position):
+    print(position)
+    # Create a new game map array where 0 values are replaced with NaN
+    z = np.where(position == '.', np.nan, position)
+    # Create the heatmap trace with custom colorscale
+    heatmap = go.Heatmap(z=z)
+    return heatmap
 
 def get_plot(game_map, positions):
 
