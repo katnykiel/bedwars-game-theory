@@ -30,22 +30,6 @@ def get_plot(game_map):
         #fig.update_layout(annotations=fig.layout.annotations)
     return heatmap
 
-def get_agent_postions():
-    """
-    Get agent positions
-
-    Calls the get_test_agents function to return a list of agents
-    initializes agent_positions list
-    iterates over agents list to append the position of each agent to the agent position
-    return agent position list
-
-    """
-    
-    agents = get_test_agents() # get test agents
-    agent_positions = [agent.position for agent in agents]
-
-    return agent_positions # return the list
-
 
 
 # Generate a plotly image from an array of spins -1 and 1
