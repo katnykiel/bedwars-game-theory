@@ -3,6 +3,8 @@ Load items df
 """
 import random
 from items import get_item_df
+from gui import *
+
 class Agent:
     """Define an 'agent' in bedwars that acts upon a grid
     """
@@ -18,6 +20,8 @@ class Agent:
         self.position = self.get_starting_position() # the x,y location of the agent
         self.traits = self.get_traits()
         self.path = [] # current path the agent is on
+        self.bed = True # if bed is alive
+        self.alive = True
 
     def get_traits(self):
         """Calculate the 'traits' of the agent that will be used in decision-making
@@ -59,6 +63,9 @@ class Agent:
                          'diamond_armor','shears','wooden_axe','wooden_pickaxe']
         self.items = {k: v for k, v in self.items.items() if k in items_to_keep}
         self.path = []
+        if not self.bed:
+            self.alive = False
+            self.position = [-1,-1]
 
     def make_decision(self):
         """ things to keep in mind
@@ -77,14 +84,18 @@ class Agent:
         self.path = path
     
     def move(self):
-        self.position = self.path[0]
-        self.path.pop(0)
         if len(self.path) == 0:
             self.make_decision()
-        
+        self.position = self.path[0]
+        self.path.pop(0)
+
     def get_path(self, target):
         start_pos = self.position
         end_pos = target
+        
+        if start_pos == end_pos:
+            return [start_pos]
+
         diff_x = end_pos[0] - start_pos[0]
         diff_y = end_pos[1] - start_pos[1]
 
@@ -109,8 +120,6 @@ class Agent:
         path.append(end_pos)
         return path
 
-
-
 def get_test_agents():
     """test by returning a list of agents
 
@@ -121,6 +130,9 @@ def get_test_agents():
     agent_list = []
     for i in range(8):
         agent_list.append(Agent(i,personality={'aggressiveness':random.random(), 'teamwork':random.random(),'emerald_desire':random.random(),'diamond_desire':random.random()}))
+
+    for i in range(8):
+        agent_list.append(Agent(i,personality={'aggressiveness':random.random(), 'teamwork':random.random(),'emerald_desire':random.random(),'diamond_desire':random.random()}))
         
     for agent in agent_list:
         agent.items = item_df['item_names'].sample(n=5,replace=False)
@@ -129,10 +141,16 @@ def get_test_agents():
 
 def run_test_game():
     agent_list = get_test_agents()
-    [agent.make_decision() for agent in agent_list]
-    for i in range(10):
-        [agent.move() for agent in agent_list]
-        print([agent.position for agent in agent_list])
+    # agent_list[2].position=[2,0]
+    # [agent.make_decision() for agent in agent_list]
+    # positions = []
+    # for i in range (100):
+    #     [agent.move() for agent in agent_list]
+    #     # print(quick_plot([agent.position for agent in agent_list]),'\n')
+    #     positions.append([agent.position for agent in agent_list])
+    get_figure(agent_list)
+    # get_animation(positions).show()
+
 def main():
     """testing loop for agents!
     """
