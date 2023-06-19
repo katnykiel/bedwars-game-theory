@@ -2,6 +2,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 import numpy as np
 from sprites import get_agent_sprites,get_base_sprite,get_diamond_sprite,get_emerald_sprite
+import referee
 
 def get_map_trace(pixel_array):
     """returns a trace given a set of pixelss
@@ -103,7 +104,7 @@ def get_heatmap(position):
 
 def get_plot(game_map):
 
-    positions = get_agent_postions()
+    positions = referee.get_agent_postions()
     
     # Define the colorscale for the heatmap
     colorscale = [[0, 'white'], [1, 'black']]

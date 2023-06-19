@@ -112,13 +112,14 @@ def allocate_resources(agent_positions, resources):
     agent_positions = get_agent_postions()
     for agent in agent_positions:
         for k in base_positions:
-            if agent.position == base_positions{k}:
+            if agent.position == base_positions[k]:
                 pass
 
 def drop_resources_on_tick():
     pass
 
 def check_resources_at_base():
+    pass
 
 def pick_up_resources(agent, resource):
     pass
