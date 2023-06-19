@@ -19,17 +19,16 @@ def main():
     repeat
     """
 
-    players_alive = 8
+    players_alive = sum([1 for agent in agent_list if agent.alive])
 
-    initialize_referee()
-    initialize_map()
+    referee.initialize_referee()
+    create_map.initialize_map()
 
     while players_alive > 1:
     
-        agent_list = get_test_agents()
-        agent_positions = get_agent_positions()
+        agent_list = agent.get_test_agents()
+        agent_positions = referee.get_agent_positions()
 
-        find_agents_with_shared_positions_and_teams(agent_list)
+        referee.find_agents_with_shared_positions_and_teams(agent_list)
 
-        allocate_resources(agent_positions)
-        
+        referee.allocate_resources(agent_positions)
